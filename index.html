@@ -3,124 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyPay - Online Wallet</title>
+    <title>EasyPay - Final Online Wallet</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
         .mobile-container { width: 100%; max-width: 380px; height: 800px; background: white; border-radius: 40px; border: 8px solid #111827; position: relative; overflow: hidden; box-shadow: 0 40px 80px -20px rgba(0,0,0,0.3); }
-        .page { display: none; height: 100%; flex-direction: column; animation: fadeIn 0.3s ease; }
+        .page { display: none; height: 100%; flex-direction: column; }
         .active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .loading { position: absolute; inset: 0; background: rgba(255,255,255,0.8); display: none; justify-content: center; align-items: center; z-index: 50; }
+        .loader { position: absolute; inset: 0; background: rgba(255,255,255,0.9); display: none; justify-content: center; align-items: center; z-index: 100; flex-direction: column; }
     </style>
 </head>
 <body>
 
     <div class="mobile-container">
-        <div id="loader" class="loading"><i class="fa-solid fa-spinner fa-spin text-3xl text-indigo-600"></i></div>
+        <div id="loader" class="loader">
+            <i class="fa-solid fa-spinner fa-spin text-4xl text-indigo-600 mb-2"></i>
+            <p class="text-xs font-bold text-gray-500">অপেক্ষা করুন...</p>
+        </div>
         
         <div id="signup-page" class="page p-8 active">
             <div class="mt-12 text-center mb-10">
-                <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg rotate-12 mb-4">
-                    <i class="fa-solid fa-user-plus text-white text-2xl"></i>
+                <div class="w-20 h-20 bg-indigo-600 rounded-3xl flex items-center justify-center mx-auto shadow-lg rotate-12 mb-6">
+                    <i class="fa-solid fa-user-plus text-white text-3xl"></i>
                 </div>
-                <h1 class="text-2xl font-black text-gray-800">অ্যাকাউন্ট খুলুন</h1>
-                <p class="text-gray-400 text-xs">সবার জন্য নিরাপদ লেনদেন</p>
+                <h1 class="text-3xl font-black text-gray-800">অ্যাকাউন্ট খুলুন</h1>
+                <p class="text-gray-400 text-sm mt-2">আপনার সঠিক তথ্য দিন</p>
             </div>
             <div class="space-y-4">
-                <input id="reg-phone" type="text" placeholder="মোবাইল নম্বর (১১ ডিজিট)" class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500">
+                <input id="reg-phone" type="number" placeholder="মোবাইল নম্বর (১১ ডিজিট)" class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500">
                 <input id="reg-pin" type="password" maxlength="4" placeholder="৪ ডিজিট পিন" class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500">
-                <button onclick="handleSignup()" class="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold shadow-lg">Register Online</button>
+                <button onclick="handleSignup()" class="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-all">Register Online</button>
             </div>
             <p class="mt-8 text-center text-gray-500 text-sm">অ্যাকাউন্ট আছে? <button onclick="showPage('login-page')" class="text-indigo-600 font-bold underline">লগইন</button></p>
         </div>
 
         <div id="login-page" class="page p-8">
             <div class="mt-12 text-center mb-10">
-                <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg -rotate-12 mb-4">
-                    <i class="fa-solid fa-lock text-white text-2xl"></i>
+                <div class="w-20 h-20 bg-indigo-600 rounded-3xl flex items-center justify-center mx-auto shadow-xl -rotate-12 mb-6">
+                    <i class="fa-solid fa-lock text-white text-3xl"></i>
                 </div>
-                <h1 class="text-2xl font-black text-gray-800">লগইন</h1>
-                <p class="text-gray-400 text-xs">আপনার ওয়ালেটে প্রবেশ করুন</p>
+                <h1 class="text-3xl font-black text-gray-800">লগইন</h1>
+                <p class="text-gray-400 text-sm mt-2">আপনার ওয়ালেটে প্রবেশ করুন</p>
             </div>
             <div class="space-y-4">
-                <input id="login-phone" type="text" placeholder="মোবাইল নম্বর" class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500">
+                <input id="login-phone" type="number" placeholder="মোবাইল নম্বর" class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500">
                 <input id="login-pin" type="password" maxlength="4" placeholder="পিন নম্বর" class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500">
-                <button onclick="handleLogin()" class="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold shadow-lg">Login</button>
+                <button onclick="handleLogin()" class="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-all">Login</button>
             </div>
-            <p class="mt-8 text-center text-gray-500 text-sm">নতুন ইউজার? <button onclick="showPage('signup-page')" class="text-indigo-600 font-bold underline">অ্যাকাউন্ট খুলুন</button></p>
+            <p class="mt-8 text-center text-gray-500 text-sm">নতুন ইউজার? <button onclick="showPage('signup-page')" class="text-indigo-600 font-bold underline">রেজিস্ট্রেশন</button></p>
         </div>
 
         <div id="dashboard" class="page bg-gray-50 overflow-y-auto">
             <div class="bg-white p-6 flex justify-between items-center shadow-sm sticky top-0 z-10">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold">W</div>
+                    <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white"><i class="fa-solid fa-wallet"></i></div>
                     <div>
                         <h2 class="text-xl font-bold text-gray-800">$ <span id="balance">0</span></h2>
-                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Available Balance</p>
+                        <p class="text-[9px] text-gray-400 font-bold uppercase mt-1">Balance</p>
                     </div>
                 </div>
                 <button onclick="location.reload()" class="text-red-500"><i class="fa-solid fa-power-off"></i></button>
             </div>
             <div class="p-6">
-                <h2 class="text-lg font-bold text-gray-800">Hello, <span id="user-id" class="text-indigo-600">User</span></h2>
+                <h2 class="text-lg font-bold text-gray-800 tracking-tight">হ্যালো, <span id="user-display" class="text-indigo-600">User</span></h2>
             </div>
             <div class="grid grid-cols-3 gap-3 px-6 mb-6">
-                <button onclick="updateBalance('add')" class="flex flex-col items-center bg-white p-4 rounded-3xl shadow-sm"><i class="fa-solid fa-plus-circle text-orange-400 mb-1"></i><span class="text-[9px] font-bold">ADD MONEY</span></button>
-                <button onclick="updateBalance('cashout')" class="flex flex-col items-center bg-white p-4 rounded-3xl shadow-sm"><i class="fa-solid fa-minus-circle text-green-500 mb-1"></i><span class="text-[9px] font-bold">CASHOUT</span></button>
-                <button onclick="sendMoney()" class="flex flex-col items-center bg-white p-4 rounded-3xl shadow-sm"><i class="fa-solid fa-paper-plane text-blue-500 mb-1"></i><span class="text-[9px] font-bold">SEND</span></button>
+                <button onclick="updateOnlineBalance('add')" class="flex flex-col items-center bg-white p-4 rounded-3xl shadow-sm border border-gray-100 font-bold text-[10px]"><i class="fa-solid fa-circle-plus text-orange-400 mb-1 text-lg"></i>ADD MONEY</button>
+                <button onclick="updateOnlineBalance('out')" class="flex flex-col items-center bg-white p-4 rounded-3xl shadow-sm border border-gray-100 font-bold text-[10px]"><i class="fa-solid fa-minus-circle text-green-500 mb-1 text-lg"></i>CASHOUT</button>
+                <button onclick="alert('ফিচার শীঘ্রই আসছে')" class="flex flex-col items-center bg-white p-4 rounded-3xl shadow-sm border border-gray-100 font-bold text-[10px]"><i class="fa-solid fa-paper-plane text-blue-500 mb-1 text-lg"></i>SEND</button>
             </div>
-            <div class="bg-white flex-1 rounded-t-[40px] p-6 shadow-2xl min-h-[300px]">
+            <div class="bg-white flex-1 rounded-t-[40px] p-8 shadow-2xl min-h-[400px]">
                 <h3 class="font-bold text-gray-700 mb-4">Transactions</h3>
-                <div id="history" class="space-y-4 text-xs text-gray-400 text-center py-10">No records found.</div>
+                <div id="history" class="text-center py-10 text-gray-300 text-xs">No transactions found</div>
             </div>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, get, child, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-        // ১. আপনার ফায়ারবেস সেটিংস এখানে দিন
-        
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        let currentPhone = "";
-
-        // গ্লোবাল ফাংশন হিসেবে সেট করা
-        window.showPage = (id) => {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        };
-
-        const toggleLoader = (show) => document.getElementById('loader').style.display = show ? 'flex' : 'none';
-
-        // সাইন-আপ
-        window.handleSignup = async () => {
-            const phone = document.getElementById('reg-phone').value.trim();
-            const pin = document.getElementById('reg-pin').value.trim();
-            if (phone.length < 11 || pin.length < 4) return alert("তথ্য সঠিক দিন");
-
-            toggleLoader(true);
-            const dbRef = ref(db);
-            const snapshot = await get(child(dbRef, `users/${phone}`));
-            
-            if (snapshot.exists()) {
-                alert("অ্যাকাউন্ট অলরেডি আছে!");
-            } else {
-                await set(ref(db, 'users/' + phone), { pin: pin, balance: 50 });
-                alert("অনলাইন রেজিস্ট্রেশন সফল! বোনাস ৫০ টাকা।");
-                showPage('login-page');
-            }
-            toggleLoader(false);
-        };
-
-        // লগইন
-        window.handleLogin = async () => {
-            const phone = document.getElementById('login-phone').value.trim(const firebaseConfig = {
+    <script>
+        // ১. আপনার ফায়ারবেস কনফিগারেশন এখানে বসান
+        const firebaseConfig = {
   apiKey: "AIzaSyAojz7yiIpjwz2DY7F-dt5UZDw-iUVWe50",
   authDomain: "easypay-9200c.firebaseapp.com",
   projectId: "easypay-9200c",
@@ -129,41 +96,100 @@
   appId: "1:1007017978757:web:38b52a695ce2437731f2ec",
   measurementId: "G-SG37EZEPM0"
 };
-            const pin = document.getElementById('login-pin').value.trim();
             
-            toggleLoader(true);
-            const dbRef = ref(db);
-            const snapshot = await get(child(dbRef, `users/${phone}`));
 
-            if (snapshot.exists() && String(snapshot.val().pin) === String(pin)) {
-                currentPhone = phone;
-                document.getElementById('user-id').innerText = phone;
-                document.getElementById('balance').innerText = snapshot.val().balance;
-                showPage('dashboard');
-            } else {
-                alert("ফোন নম্বর বা পিন ভুল!");
+        // Firebase ইনিশিয়ালাইজ
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        let loggedInUser = null;
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function setLoader(status) {
+            document.getElementById('loader').style.display = status ? 'flex' : 'none';
+        }
+
+        // সাইন-আপ ফাংশন
+        async function handleSignup() {
+            const phone = document.getElementById('reg-phone').value;
+            const pin = document.getElementById('reg-pin').value;
+
+            if (phone.length < 11 || pin.length < 4) {
+                alert("সঠিক ফোন এবং পিন দিন");
+                return;
             }
-            toggleLoader(false);
-        };
 
-        // ব্যালেন্স আপডেট (Add/Cashout)
-        window.updateBalance = async (type) => {
-            let amount = prompt("পরিমাণ:");
-            if (!amount || isNaN(amount)) return;
-            
-            toggleLoader(true);
-            const dbRef = ref(db);
-            const snapshot = await get(child(dbRef, `users/${currentPhone}`));
-            let newBalance = snapshot.val().balance;
+            setLoader(true);
+            try {
+                const snapshot = await database.ref('users/' + phone).once('value');
+                if (snapshot.exists()) {
+                    alert("অ্যাকাউন্ট আগে থেকেই আছে!");
+                } else {
+                    await database.ref('users/' + phone).set({
+                        pin: pin,
+                        balance: 50 // বোনাস ৫০ টাকা
+                    });
+                    alert("রেজিস্ট্রেশন সফল! এখন লগইন করুন।");
+                    showPage('login-page');
+                }
+            } catch (error) {
+                alert("সার্ভার সমস্যা: " + error.message);
+            }
+            setLoader(false);
+        }
 
-            if (type === 'add') newBalance += parseInt(amount);
-            else if (newBalance >= amount) newBalance -= parseInt(amount);
-            else { alert("ব্যালেন্স নেই"); toggleLoader(false); return; }
+        // লগইন ফাংশন
+        async function handleLogin() {
+            const phone = document.getElementById('login-phone').value;
+            const pin = document.getElementById('login-pin').value;
 
-            await update(ref(db, `users/${currentPhone}`), { balance: newBalance });
-            document.getElementById('balance').innerText = newBalance;
-            toggleLoader(false);
-        };
+            setLoader(true);
+            try {
+                const snapshot = await database.ref('users/' + phone).once('value');
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    if (String(userData.pin) === String(pin)) {
+                        loggedInUser = phone;
+                        document.getElementById('user-display').innerText = phone;
+                        document.getElementById('balance').innerText = userData.balance;
+                        showPage('dashboard');
+                    } else {
+                        alert("ভুল পিন!");
+                    }
+                } else {
+                    alert("অ্যাকাউন্ট পাওয়া যায়নি!");
+                }
+            } catch (error) {
+                alert("লগইন সমস্যা: " + error.message);
+            }
+            setLoader(false);
+        }
+
+        // টাকা কমানো বা বাড়ানোর ফাংশন
+        async function updateOnlineBalance(type) {
+            let amount = prompt("টাকার পরিমাণ লিখুন:");
+            if (!amount || isNaN(amount) || amount <= 0) return;
+
+            setLoader(true);
+            const userRef = database.ref('users/' + loggedInUser);
+            const snapshot = await userRef.once('value');
+            let currentBalance = parseInt(snapshot.val().balance);
+
+            if (type === 'add') {
+                currentBalance += parseInt(amount);
+            } else {
+                if (currentBalance >= amount) currentBalance -= parseInt(amount);
+                else { alert("পর্যাপ্ত টাকা নেই"); setLoader(false); return; }
+            }
+
+            await userRef.update({ balance: currentBalance });
+            document.getElementById('balance').innerText = currentBalance;
+            setLoader(false);
+            alert("সফল হয়েছে!");
+        }
     </script>
 </body>
-                </html>
+</html>
