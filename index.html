@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyPay - Ultimate Wallet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; }
+        .mobile-container { width: 100%; max-width: 400px; height: 850px; background: white; border-radius: 40px; border: 8px solid #111827; position: relative; overflow: hidden; box-shadow: 0 50px 100px -20px rgba(0,0,0,0.3); }
+        .page { display: none; height: 100%; flex-direction: column; animation: fadeIn 0.3s ease; }
+        .active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .service-btn:active { transform: scale(0.95); }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen p-4">
+
+    <div class="mobile-container">
+        
+        <div id="signup-page" class="page p-8 active">
+            <div class="mt-12 text-center mb-10">
+                <div class="w-20 h-20 bg-indigo-600 rounded-3xl flex items-center justify-center mx-auto shadow-xl rotate-12 mb-6">
+                    <i class="fa-solid fa-user-plus text-white text-3xl"></i>
+                </div>
+                <h1 class="text-3xl font-black text-gray-800">Register</h1>
+                <p class="text-gray-400 text-sm mt-2">নতুন অ্যাকাউন্ট তৈরি করুন</p>
+            </div>
+            <div class="space-y-4">
+                <input id="reg-phone" type="number" placeholder="মোবাইল নম্বর" class="w-full p-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-indigo-500">
+                <input id="reg-pin" type="password" maxlength="4" placeholder="৪ ডিজিট পিন" class="w-full p-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-indigo-500">
+                <button onclick="signup()" class="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold text-lg shadow-lg">Sign Up</button>
+            </div>
+            <p class="mt-8 text-center text-gray-500 text-sm">অ্যাকাউন্ট আছে? <button onclick="showPage('login-page')" class="text-indigo-600 font-bold">লগইন</button></p>
+        </div>
+
+        <div id="login-page" class="page p-8">
+            <div class="mt-12 text-center mb-10">
+                <div class="w-20 h-20 bg-indigo-600 rounded-3xl flex items-center justify-center mx-auto shadow-xl -rotate-12 mb-6">
+                    <i class="fa-solid fa-lock text-white text-3xl"></i>
+                </div>
+                <h1 class="text-3xl font-black text-gray-800">Login</h1>
+                <p class="text-gray-400 text-sm mt-2">আপনার ওয়ালেটে প্রবেশ করুন</p>
+            </div>
+            <div class="space-y-4">
+                <input id="login-phone" type="number" placeholder="মোবাইল নম্বর" class="w-full p-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-indigo-500">
+                <input id="login-pin" type="password" maxlength="4" placeholder="পিন" class="w-full p-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-indigo-500">
+                <button onclick="login()" class="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold text-lg shadow-lg">Login</button>
+            </div>
+            <p class="mt-8 text-center text-gray-500 text-sm">নতুন ইউজার? <button onclick="showPage('signup-page')" class="text-indigo-600 font-bold">রেজিস্ট্রেশন</button></p>
+        </div>
+
+        <div id="dashboard" class="page bg-gray-50">
+            <div class="bg-white p-6 flex justify-between items-center shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg"><i class="fa-solid fa-wallet"></i></div>
+                    <div>
+                        <h2 class="text-2xl font-black text-gray-800">$ <span id="user-balance">0</span></h2>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-widest">Balance</p>
+                    </div>
+                </div>
+                <button onclick="logout()" class="text-red-500 bg-red-50 p-3 rounded-full hover:bg-red-500 hover:text-white transition-all"><i class="fa-solid fa-power-off"></i></button>
+            </div>
+
+            <div class="p-6">
+                <h2 class="text-lg font-bold text-gray-800">Hello, <span id="display-phone" class="text-indigo-600">User</span></h2>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 px-6 mb-6">
+                <button onclick="addMoney()" class="service-btn flex flex-col items-center bg-white p-4 rounded-3xl shadow-sm">
+                    <i class="fa-solid fa-plus-circle text-orange-400 mb-2"></i>
+                    <span class="text-[9px] font-bold uppercase">Add Money</span>
+                </button>
+                <button onclick="cashOut()" class="service-btn flex flex-col items-center bg-white p-4 rounded-3xl shadow-sm">
+                    <i class="fa-solid fa-arrow-down-up-lock text-green-500 mb-2"></i>
+                    <span class="text-[9px] font-bold uppercase">Cashout</span>
+                </button>
+                <button onclick="sendMoney()" class="service-btn flex flex-col items-center bg-white p-4 rounded-3xl shadow-sm">
+                    <i class="fa-solid fa-paper-plane text-blue-500 mb-2"></i>
+                    <span class="text-[9px] font-bold uppercase tracking-tighter">Send Money</span>
+                </button>
+            </div>
+
+            <div class="bg-white flex-1 rounded-t-[40px] p-6 shadow-[0_-5px_20px_rgba(0,0,0,0.05)] overflow-y-auto">
+                <h3 class="font-bold text-gray-800 mb-4">Transaction History</h3>
+                <div id="history-box" class="space-y-4">
+                    <p class="text-center text-xs text-gray-300 py-10">No transactions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function signup() {
+            const phone = document.getElementById('reg-phone').value;
+            const pin = document.getElementById('reg-pin').value;
+            if (phone.length < 11 || pin.length < 4) return alert("সঠিক তথ্য দিন");
+
+            let users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[phone]) return alert("অ্যাকাউন্ট অলরেডি আছে");
+
+            users[phone] = { pin: pin, balance: 50, history: [] }; // বোনাস ৫০ টাকা
+            localStorage.setItem('users', JSON.stringify(users));
+            alert("সফল হয়েছে! আপনার পিন মনে রাখুন।");
+            showPage('login-page');
+        }
+
+        function login() {
+            const phone = document.getElementById('login-phone').value;
+            const pin = document.getElementById('login-pin').value;
+            let users = JSON.parse(localStorage.getItem('users')) || {};
+
+            if (users[phone] && users[phone].pin === pin) {
+                currentUser = phone;
+                updateUI();
+                showPage('dashboard');
+            } else {
+                alert("ভুল নম্বর বা পিন");
+            }
+        }
+
+        function updateUI() {
+            let users = JSON.parse(localStorage.getItem('users'));
+            document.getElementById('user-balance').innerText = users[currentUser].balance;
+            document.getElementById('display-phone').innerText = currentUser;
+            
+            const historyBox = document.getElementById('history-box');
+            historyBox.innerHTML = users[currentUser].history.map(h => `
+                <div class="flex justify-between items-center border-b pb-2">
+                    <div>
+                        <p class="text-xs font-bold ${h.type === 'In' ? 'text-green-600' : 'text-red-600'}">${h.msg}</p>
+                        <p class="text-[9px] text-gray-400">${h.date}</p>
+                    </div>
+                    <span class="text-xs font-bold">${h.type === 'In' ? '+' : '-'}$${h.amount}</span>
+                </div>
+            `).join('') || '<p class="text-center text-xs text-gray-300 py-10">No transactions</p>';
+        }
+
+        function addMoney() {
+            let amount = prompt("টাকার পরিমাণ:");
+            if (amount > 0) {
+                let users = JSON.parse(localStorage.getItem('users'));
+                users[currentUser].balance += parseInt(amount);
+                users[currentUser].history.unshift({ type: 'In', amount: amount, msg: 'Money Added', date: new Date().toLocaleString() });
+                localStorage.setItem('users', JSON.stringify(users));
+                updateUI();
+            }
+        }
+
+        function cashOut() {
+            let amount = prompt("ক্যাশআউট পরিমাণ:");
+            let users = JSON.parse(localStorage.getItem('users'));
+            if (amount > 0 && users[currentUser].balance >= amount) {
+                users[currentUser].balance -= parseInt(amount);
+                users[currentUser].history.unshift({ type: 'Out', amount: amount, msg: 'Cashout Successful', date: new Date().toLocaleString() });
+                localStorage.setItem('users', JSON.stringify(users));
+                updateUI();
+            } else { alert("পর্যাপ্ত ব্যালেন্স নেই"); }
+        }
+
+        function sendMoney() {
+            let targetPhone = prompt("কাকে টাকা পাঠাতে চান (মোবাইল নম্বর)?");
+            let amount = prompt("টাকার পরিমাণ:");
+            let users = JSON.parse(localStorage.getItem('users'));
+
+            if (users[targetPhone] && targetPhone !== currentUser) {
+                if (amount > 0 && users[currentUser].balance >= amount) {
+                    // সেন্ডার এর ব্যালেন্স কমবে
+                    users[currentUser].balance -= parseInt(amount);
+                    users[currentUser].history.unshift({ type: 'Out', amount: amount, msg: 'Sent to ' + targetPhone, date: new Date().toLocaleString() });
+                    
+                    // রিসিভার এর ব্যালেন্স বাড়বে
+                    users[targetPhone].balance += parseInt(amount);
+                    users[targetPhone].history.unshift({ type: 'In', amount: amount, msg: 'Received from ' + currentUser, date: new Date().toLocaleString() });
+                    
+                    localStorage.setItem('users', JSON.stringify(users));
+                    updateUI();
+                    alert("টাকা পাঠানো সফল হয়েছে!");
+                } else { alert("পর্যাপ্ত ব্যালেন্স নেই"); }
+            } else { alert("সঠিক ইউজার নম্বর দিন"); }
+        }
+
+        function logout() { location.reload(); }
+    </script>
+</body>
+  </html>
