@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyPay - Ultimate Wallet</title>
+    <title>Payoo - Ultimate Online Wallet</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -17,8 +17,8 @@
         .page { display: none; height: 100%; flex-direction: column; overflow-y: auto; }
         .active { display: flex; }
         .loader { position: absolute; inset: 0; background: rgba(255,255,255,0.9); display: none; justify-content: center; align-items: center; z-index: 100; flex-direction: column; }
-        .service-card { transition: all 0.2s; border: 1px solid #f1f5f9; cursor: pointer; }
-        .service-card:active { transform: scale(0.95); }
+        .service-card { transition: all 0.2s; border: 1px solid #f1f5f9; }
+        .service-card:active { transform: scale(0.95); background-color: #f8fafc; }
     </style>
 </head>
 <body>
@@ -26,33 +26,34 @@
     <div class="mobile-container">
         <div id="loader" class="loader">
             <i class="fa-solid fa-circle-notch fa-spin text-4xl text-indigo-600 mb-2"></i>
-            <p class="text-xs font-bold text-gray-400">অপেক্ষা করুন...</p>
+            <p class="text-xs font-bold text-gray-400">Loading...</p>
         </div>
 
         <div id="login-page" class="page p-8 active">
             <div class="mt-20 text-center mb-12">
                 <div class="w-20 h-20 bg-indigo-600 rounded-3xl flex items-center justify-center mx-auto shadow-xl mb-6">
-                    <i class="fa-solid fa-lock text-white text-3xl"></i>
+                    <i class="fa-solid fa-shield-halved text-white text-3xl"></i>
                 </div>
-                <h1 class="text-3xl font-black text-gray-800">লগইন করুন</h1>
+                <h1 class="text-3xl font-black text-gray-800 tracking-tighter">Welcome to <span class="text-indigo-600">Payoo</span></h1>
+                <p class="text-gray-400 text-sm mt-2">আপনার ওয়ালেটে লগইন করুন</p>
             </div>
             <div class="space-y-4">
                 <input id="login-phone" type="number" placeholder="মোবাইল নম্বর" class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 border-none">
                 <input id="login-pin" type="password" maxlength="4" placeholder="৪ ডিজিট পিন" class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 border-none">
-                <button onclick="handleLogin()" class="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold text-lg shadow-lg">প্রবেশ করুন</button>
+                <button onclick="handleLogin()" class="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold text-lg shadow-lg">Login</button>
             </div>
-            <p class="mt-8 text-center text-gray-500 text-sm">নতুন ইউজার? <button onclick="showPage('signup-page')" class="text-indigo-600 font-bold underline">অ্যাকাউন্ট খুলুন</button></p>
+            <p class="mt-8 text-center text-gray-500 text-sm">অ্যাকাউন্ট নেই? <button onclick="showPage('signup-page')" class="text-indigo-600 font-bold underline">নতুন তৈরি করুন</button></p>
         </div>
 
         <div id="signup-page" class="page p-8">
-            <div class="mt-16 text-center mb-10">
-                <h1 class="text-3xl font-black text-gray-800">অ্যাকাউন্ট তৈরি</h1>
+            <div class="mt-20 text-center mb-12">
+                <h1 class="text-3xl font-black text-gray-800 tracking-tighter">নতুন অ্যাকাউন্ট</h1>
+                <p class="text-gray-400 text-sm mt-2">নিরাপদ লেনদেনের শুরু এখানে</p>
             </div>
             <div class="space-y-4">
-                <input id="reg-name" type="text" placeholder="আপনার পুরো নাম" class="w-full p-4 bg-gray-50 rounded-2xl outline-none border-none">
-                <input id="reg-phone" type="number" placeholder="মোবাইল নম্বর (১১ ডিজিট)" class="w-full p-4 bg-gray-50 rounded-2xl outline-none border-none">
-                <input id="reg-pin" type="password" maxlength="4" placeholder="৪ ডিজিট পিন দিন" class="w-full p-4 bg-gray-50 rounded-2xl outline-none border-none">
-                <button onclick="handleSignup()" class="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold text-lg">নিবন্ধন করুন</button>
+                <input id="reg-phone" type="number" placeholder="১১ ডিজিট মোবাইল নম্বর" class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 border-none">
+                <input id="reg-pin" type="password" maxlength="4" placeholder="৪ ডিজিট পিন সেট করুন" class="w-full p-4 bg-gray-50 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 border-none">
+                <button onclick="handleSignup()" class="w-full bg-indigo-600 text-white p-4 rounded-2xl font-bold text-lg shadow-lg">Register</button>
             </div>
             <button onclick="showPage('login-page')" class="mt-6 text-gray-400 text-sm font-bold w-full">পিছনে যান</button>
         </div>
@@ -60,49 +61,61 @@
         <div id="dashboard" class="page bg-white">
             <div class="p-6 flex justify-between items-center border-b border-gray-50 sticky top-0 bg-white z-10">
                 <div class="flex items-center gap-3">
-                    <img src="https://cdn-icons-png.flaticon.com/512/10336/10336114.png" class="w-10">
+                    <img src="https://cdn-icons-png.flaticon.com/512/10336/10336114.png" class="w-10" alt="logo">
                     <div>
                         <h2 class="text-2xl font-black text-gray-800 leading-none">$ <span id="balance">0</span></h2>
                         <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Available Balance</p>
                     </div>
                 </div>
-                <button onclick="location.reload()" class="bg-gray-100 p-3 rounded-xl"><i class="fa-solid fa-power-off text-red-500"></i></button>
+                <button onclick="location.reload()" class="bg-gray-100 p-3 rounded-xl text-gray-600 hover:bg-red-50 hover:text-red-500"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
 
-            <div class="mx-6 mt-6 p-4 bg-indigo-50 rounded-[2rem] flex items-center gap-4">
-                <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm">
-                <div>
-                    <h2 id="display-name" class="text-sm font-extrabold text-gray-800">ইউজার নেম</h2>
-                    <p id="display-phone" class="text-[10px] text-gray-500 font-bold"></p>
+            <div class="p-6">
+                <h1 class="text-2xl font-black text-gray-800">Welcome to <span class="text-indigo-600">Payoo</span></h1>
+                <p class="text-xs text-gray-400 mt-1 leading-relaxed">Enjoy easy and convenient financial services with us. Cashout charge is low and secure.</p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 px-6 mb-8">
+                <button onclick="addMoney()" class="service-card flex flex-col items-center p-4 rounded-2xl shadow-sm">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4359/4359606.png" class="w-8 mb-2">
+                    <span class="text-[10px] font-bold text-gray-700">Add Money</span>
+                </button>
+                <button onclick="cashOut()" class="service-card flex flex-col items-center p-4 rounded-2xl shadow-sm">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png" class="w-8 mb-2">
+                    <span class="text-[10px] font-bold text-gray-700">Cashout</span>
+                </button>
+                <button onclick="sendMoney()" class="service-card flex flex-col items-center p-4 rounded-2xl shadow-sm">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3034/3034057.png" class="w-8 mb-2">
+                    <span class="text-[10px] font-bold text-gray-700">Transfer</span>
+                </button>
+                <button onclick="alert('Bonus Coming Soon!')" class="service-card flex flex-col items-center p-4 rounded-2xl shadow-sm">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135679.png" class="w-8 mb-2">
+                    <span class="text-[10px] font-bold text-gray-700">Get Bonus</span>
+                </button>
+                <button onclick="alert('Pay Bill feature coming soon!')" class="service-card flex flex-col items-center p-4 rounded-2xl shadow-sm">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1052/1052856.png" class="w-8 mb-2">
+                    <span class="text-[10px] font-bold text-gray-700">Pay Bill</span>
+                </button>
+                <div class="service-card flex flex-col items-center p-4 rounded-2xl shadow-sm bg-indigo-600 border-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2611/2611110.png" class="w-8 mb-2 brightness-200">
+                    <span class="text-[10px] font-bold text-white">Transaction</span>
                 </div>
             </div>
 
-            <div class="p-6 grid grid-cols-3 gap-3">
-                <button onclick="addMoney()" class="service-card flex flex-col items-center p-4 rounded-2xl bg-white shadow-sm">
-                    <img src="https://cdn-icons-png.flaticon.com/512/4359/4359606.png" class="w-8 mb-2">
-                    <span class="text-[9px] font-bold text-gray-700">Add Money</span>
-                </button>
-                <button onclick="cashOut()" class="service-card flex flex-col items-center p-4 rounded-2xl bg-white shadow-sm">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png" class="w-8 mb-2">
-                    <span class="text-[9px] font-bold text-gray-700">Cashout</span>
-                </button>
-                <button onclick="sendMoney()" class="service-card flex flex-col items-center p-4 rounded-2xl bg-white shadow-sm">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3034/3034057.png" class="w-8 mb-2">
-                    <span class="text-[9px] font-bold text-gray-700">Transfer</span>
-                </button>
-            </div>
-
-            <div class="bg-gray-50 flex-1 rounded-t-[40px] p-8 shadow-inner mt-4">
-                <h3 class="text-lg font-extrabold text-gray-800 mb-6">লেনদেনের ইতিহাস</h3>
+            <div class="bg-gray-50 flex-1 rounded-t-[40px] p-8 shadow-inner">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-extrabold text-gray-800">Transaction History</h3>
+                    <span class="text-[10px] font-bold text-gray-400 cursor-pointer">View Details</span>
+                </div>
                 <div id="history-list" class="space-y-4">
-                    <p class="text-center text-gray-300 py-10 text-xs italic">কোনো রেকর্ড নেই</p>
+                    <p class="text-center text-gray-300 py-10 text-xs">কোনো লেনদেন পাওয়া যায়নি</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // === ১. আপনার ফায়ারবেস তথ্য এখানে দিন ===
+        // === ১. আপনার ফায়ারবেস সেটিংস এখানে বসান ===
         const firebaseConfig = {
             apiKey: "AIzaSyAojz7yiIpjwz2DY7F-dt5UZDw-iUVWe50",
   authDomain: "easypay-9200c.firebaseapp.com",
@@ -113,12 +126,13 @@
   appId: "1:1007017978757:web:38b52a695ce2437731f2ec",
   measurementId: "G-SG37EZEPM0"
 };
-        // ==========================================
 
+        // Firebase Initialize
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         let userPhone = null;
 
+        // Common Functions
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -128,120 +142,150 @@
             document.getElementById('loader').style.display = val ? 'flex' : 'none';
         }
 
-        // হিস্ট্রি সেভ করা
+        // --- ২. ফায়ারবেস হিস্ট্রি সেভ করার ফাংশন ---
         async function saveHistory(phone, type, amount, msg) {
-            await db.ref(`users/${phone}/history`).push({
-                type: type, amount: amount, msg: msg,
-                date: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+            const historyRef = db.ref(`users/${phone}/history`);
+            await historyRef.push({
+                type: type,
+                amount: amount,
+                msg: msg,
+                date: new Date().toLocaleString('en-US', { hour12: true })
             });
         }
 
-        // হিস্ট্রি লোড করা
+        // --- ৩. হিস্ট্রি ডাটাবেস থেকে এনে দেখানো ---
         async function loadHistory(phone) {
             const list = document.getElementById('history-list');
             const snapshot = await db.ref(`users/${phone}/history`).limitToLast(10).once('value');
+            
             if (snapshot.exists()) {
                 let html = '';
-                snapshot.forEach(c => {
-                    const d = c.val();
-                    const isIn = d.type === 'In';
+                snapshot.forEach(child => {
+                    const data = child.val();
+                    const color = data.type === 'In' ? 'text-green-600' : 'text-red-600';
+                    const iconBg = data.type === 'In' ? 'bg-green-50' : 'bg-red-50';
+                    const icon = data.type === 'In' ? 'fa-plus' : 'fa-minus';
+                    
                     html = `
-                    <div class="bg-white p-4 rounded-2xl flex items-center justify-between border border-gray-100">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 ${isIn ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'} rounded-full flex items-center justify-center text-[10px]">
-                                <i class="fa-solid ${isIn ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                    <div class="bg-white p-4 rounded-2xl flex items-center justify-between shadow-sm border border-gray-50">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 ${iconBg} ${color} rounded-full flex items-center justify-center text-xs">
+                                <i class="fa-solid ${icon}"></i>
                             </div>
                             <div>
-                                <p class="text-[11px] font-bold text-gray-800">${d.msg}</p>
-                                <p class="text-[8px] text-gray-400">${d.date}</p>
+                                <p class="text-[12px] font-bold text-gray-800">${data.msg}</p>
+                                <p class="text-[9px] text-gray-400 mt-1">${data.date}</p>
                             </div>
                         </div>
-                        <p class="text-xs font-black ${isIn ? 'text-green-600' : 'text-red-600'}">${isIn ? '+' : '-'}${d.amount}</p>
+                        <p class="text-sm font-black ${color}">${data.type === 'In' ? '+' : '-'}${data.amount}</p>
                     </div>` + html;
                 });
                 list.innerHTML = html;
             }
         }
 
-        // সাইন-আপ (নাম সহ)
+        // --- ৪. সাইন-আপ ---
         async function handleSignup() {
-            const name = document.getElementById('reg-name').value;
-            const phone = document.getElementById('reg-phone').value;
-            const pin = document.getElementById('reg-pin').value;
-
-            if (!name || phone.length < 11) return alert("সঠিক তথ্য দিন");
+            const phone = document.getElementById('reg-phone').value.trim();
+            const pin = document.getElementById('reg-pin').value.trim();
+            if (phone.length < 11 || pin.length < 4) return alert("সঠিক ফোন ও পিন দিন");
 
             setLoader(true);
-            const user = await db.ref(`users/${phone}`).once('value');
-            if (user.exists()) alert("অ্যাকাউন্ট আছে!");
-            else {
-                await db.ref(`users/${phone}`).set({ name: name, pin: pin, balance: 50 });
-                await saveHistory(phone, 'In', 50, 'নিবন্ধন বোনাস');
-                alert("সফল! লগইন করুন।");
+            const userCheck = await db.ref(`users/${phone}`).once('value');
+            if (userCheck.exists()) {
+                alert("অ্যাকাউন্ট অলরেডি আছে!");
+            } else {
+                await db.ref(`users/${phone}`).set({ pin: pin, balance: 50 });
+                await saveHistory(phone, 'In', 50, 'Registration Bonus');
+                alert("অ্যাকাউন্ট তৈরি সফল! বোনাস ৫০ টাকা।");
                 showPage('login-page');
             }
             setLoader(false);
         }
 
-        // লগইন (ড্যাশবোর্ড তথ্য সহ)
+        // --- ৫. লগইন ---
         async function handleLogin() {
-            const phone = document.getElementById('login-phone').value;
-            const pin = document.getElementById('login-pin').value;
+            const phone = document.getElementById('login-phone').value.trim();
+            const pin = document.getElementById('login-pin').value.trim();
             
             setLoader(true);
             const snapshot = await db.ref(`users/${phone}`).once('value');
             if (snapshot.exists() && String(snapshot.val().pin) === String(pin)) {
                 userPhone = phone;
-                const data = snapshot.val();
-                document.getElementById('display-name').innerText = data.name;
-                document.getElementById('display-phone').innerText = "Account: " + phone;
-                document.getElementById('balance').innerText = data.balance;
+                document.getElementById('balance').innerText = snapshot.val().balance;
                 loadHistory(phone);
                 showPage('dashboard');
-            } else alert("ভুল তথ্য!");
+            } else {
+                alert("ভুল ফোন নম্বর বা পিন!");
+            }
             setLoader(false);
         }
 
-        // অ্যাড মানি
+        // --- ৬. টাকা যোগ (Add Money) ---
         async function addMoney() {
-            const amount = prompt("কত যোগ করবেন?");
-            if (!amount || amount <= 0) return;
+            const amount = prompt("টাকার পরিমাণ লিখুন:");
+            if (!amount || isNaN(amount) || amount <= 0) return;
+
             setLoader(true);
             const ref = db.ref(`users/${userPhone}`);
-            const bal = (await ref.once('value')).val().balance;
-            let newBal = parseInt(bal) + parseInt(amount);
+            const snap = await ref.once('value');
+            let newBal = parseInt(snap.val().balance) + parseInt(amount);
+            
             await ref.update({ balance: newBal });
-            await saveHistory(userPhone, 'In', amount, 'Money Added');
+            await saveHistory(userPhone, 'In', amount, 'Successfully Added Money');
+            
             document.getElementById('balance').innerText = newBal;
             loadHistory(userPhone);
             setLoader(false);
+            alert("টাকা যোগ হয়েছে!");
         }
 
-        // ট্রান্সফার (এক নম্বর থেকে অন্য নম্বরে)
+        // --- ৭. ক্যাশআউট (Cashout) ---
+        async function cashOut() {
+            const amount = prompt("ক্যাশআউট পরিমাণ:");
+            const ref = db.ref(`users/${userPhone}`);
+            const snap = await ref.once('value');
+            let current = parseInt(snap.val().balance);
+
+            if (amount > 0 && current >= amount) {
+                setLoader(true);
+                let newBal = current - parseInt(amount);
+                await ref.update({ balance: newBal });
+                await saveHistory(userPhone, 'Out', amount, 'Cashout Successful');
+                document.getElementById('balance').innerText = newBal;
+                loadHistory(userPhone);
+                setLoader(false);
+                alert("ক্যাশআউট সফল!");
+            } else { alert("পর্যাপ্ত ব্যালেন্স নেই!"); }
+        }
+
+        // --- ৮. সেন্ড মানি (Transfer) ---
         async function sendMoney() {
-            const target = prompt("প্রাপকের নম্বর:");
+            const target = prompt("রিসিভার ফোন নম্বর দিন:");
             const amount = prompt("টাকার পরিমাণ:");
-            if (!target || target === userPhone) return;
+            if (target === userPhone) return alert("নিজে নিজেকে পাঠানো সম্ভব নয়!");
 
             setLoader(true);
             const targetSnap = await db.ref(`users/${target}`).once('value');
             const mySnap = await db.ref(`users/${userPhone}`).once('value');
 
-            if (targetSnap.exists() && mySnap.val().balance >= amount) {
+            if (targetSnap.exists() && parseInt(mySnap.val().balance) >= amount) {
+                // Sender update
                 let myNew = parseInt(mySnap.val().balance) - parseInt(amount);
-                let hisNew = parseInt(targetSnap.val().balance) + parseInt(amount);
-
                 await db.ref(`users/${userPhone}`).update({ balance: myNew });
                 await saveHistory(userPhone, 'Out', amount, `Sent to ${target}`);
+
+                // Receiver update
+                let hisNew = parseInt(targetSnap.val().balance) + parseInt(amount);
                 await db.ref(`users/${target}`).update({ balance: hisNew });
                 await saveHistory(target, 'In', amount, `Received from ${userPhone}`);
 
                 document.getElementById('balance').innerText = myNew;
                 loadHistory(userPhone);
-                alert("ট্রান্সফার সফল!");
-            } else alert("ব্যর্থ!");
+                alert("ট্রান্সফার সফল হয়েছে!");
+            } else { alert("ব্যর্থ! নম্বর ভুল বা ব্যালেন্স নেই।"); }
             setLoader(false);
         }
     </script>
 </body>
-                    </html>
+</html>
